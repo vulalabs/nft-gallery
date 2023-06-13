@@ -475,7 +475,7 @@ export default function App() {
             {selectedTraits.length > 0 && (
               <div className="flex flex-row items-center gap-x-3">
                 <button
-                  className="text-sm rounded-md text-gray-400 text-left"
+                  className="text-[10px] md:text-sm lg:text-sm rounded-md text-gray-400 text-left"
                   onClick={() => {
                     setSelectedCategories([]); // Reset selected categories to 'All'
                     setSelectedTraits([]); // Reset selected traits to an empty array
@@ -487,7 +487,7 @@ export default function App() {
                   {selectedCategories.map((categoryTrait) => (
                     <button
                       key={categoryTrait.category}
-                      className="flex items-center space-x-1 text-gray-600 text-sm font-medium rounded-full border-2 border-gray-200 px-2 py-1"
+                      className="flex items-center space-x-1 text-gray-600 text-[10px] md:text-sm lg:text-sm font-medium rounded-full border-2 border-gray-200 px-1 md:px-2 lg:px-2 py-0.5 md:py-1 lg:py-1"
                       onClick={() => {
                         setSelectedCategories((prevCategories) =>
                           prevCategories.filter((prevCategoryTrait) =>
