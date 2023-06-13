@@ -123,27 +123,34 @@ export default function App() {
   }, [filteredItems, searchedItems, itemsPerPage, searchQuery]);
 
   const fetchMoreData = () => {
-    setTimeout(() => {
-      const startIndex = items.length;
-      const endIndex = startIndex + itemsPerPage;
-      const nextItemsBatch = filteredItems.slice(startIndex, endIndex);
+  setTimeout(() => {
+    const startIndex = items.length;
+    const endIndex = startIndex + itemsPerPage;
+    const nextItemsBatch = filteredItems.slice(startIndex, endIndex);
 
-      const uniqueNextItems = nextItemsBatch.filter((nextItem) => {
-        return !items.some((item) => item.id === nextItem.id);
+    const uniqueNextItems = nextItemsBatch.filter((nextItem) => {
+      return !items.some((item) => item.id === nextItem.id);
+    });
+
+    if (uniqueNextItems.length > 0) {
+      setItems((prevItems) => {
+        const allItems = [...prevItems, ...uniqueNextItems];
+        return allItems.slice(0, Math.min(allItems.length, startIndex + itemsPerPage));
       });
-
-      if (uniqueNextItems.length > 0) {
-        setNextItems(uniqueNextItems);
-      }
-    }, 300);
-  };
-
-  useEffect(() => {
-    if (nextItems.length > 0) {
-      setItems((prevItems) => [...prevItems, ...nextItems]);
-      setNextItems([]);
     }
-  }, [nextItems]);
+  }, 300);
+};
+
+useEffect(() => {
+  if (nextItems.length > 0) {
+    setItems((prevItems) => {
+      const allItems = [...prevItems, ...nextItems];
+      return allItems.slice(0, itemsPerPage);
+    });
+    setNextItems([]);
+  }
+}, [nextItems]);
+
 
 
   // Log selected traits
