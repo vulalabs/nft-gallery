@@ -18,7 +18,6 @@ export default function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const rarityObject = rarityData;
   const [openCategory, setOpenCategory] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTraits, setSelectedTraits] = useState([]);
@@ -60,6 +59,8 @@ export default function App() {
     });
   };
 
+  //linked to search bar
+  //change VULA to your collection name
   const handleSearch = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
@@ -75,6 +76,7 @@ export default function App() {
     setSearchedItems(searched);
   };
 
+  //categories and traits on the side bar
   const filteredItems = useMemo(() => {
     if (selectedCategories.length === 0 && selectedTraits.length === 0 && searchQuery === '') {
       return data; // If no filters or search query are applied, include all items
@@ -107,37 +109,47 @@ export default function App() {
     });
   }, [selectedCategories, selectedTraits, searchQuery]);
 
+  //displayed all, filtered, or searched items
+  const [nextItems, setNextItems] = useState([]);
+
   useEffect(() => {
-    // Update items based on either data, searchedItems, or filteredItems
-    let updatedItems;
     if (searchQuery === '') {
-      updatedItems = filteredItems.slice(0, itemsPerPage);
+      setItems(filteredItems.slice(0, itemsPerPage));
     } else if (searchedItems.length > 0) {
-      updatedItems = searchedItems.slice(0, itemsPerPage);
+      setItems(searchedItems.slice(0, itemsPerPage));
     } else {
-      updatedItems = filteredItems.slice(0, itemsPerPage);
+      setItems([]);
     }
-  
-    setItems(updatedItems);
   }, [filteredItems, searchedItems, itemsPerPage, searchQuery]);
-  
 
   const fetchMoreData = () => {
     setTimeout(() => {
       const startIndex = items.length;
       const endIndex = startIndex + itemsPerPage;
-      const nextItems = filteredItems.slice(startIndex, endIndex);
-  
-      if (nextItems.length > 0) {
-        setItems((prevItems) => prevItems.concat(nextItems));
+      const nextItemsBatch = filteredItems.slice(startIndex, endIndex);
+
+      const uniqueNextItems = nextItemsBatch.filter((nextItem) => {
+        return !items.some((item) => item.id === nextItem.id);
+      });
+
+      if (uniqueNextItems.length > 0) {
+        setNextItems(uniqueNextItems);
       }
     }, 300);
-  };  
+  };
+
+  useEffect(() => {
+    if (nextItems.length > 0) {
+      setItems((prevItems) => [...prevItems, ...nextItems]);
+      setNextItems([]);
+    }
+  }, [nextItems]);
+
 
   // Log selected traits
-  useEffect(() => {
+  /* useEffect(() => {
     console.log('Selected Traits:', selectedTraits);
-  }, [selectedTraits]);
+  }, [selectedTraits]); */
 
   const handleCategoryClick = (category) => {
     setOpenCategory((prevCategory) => (prevCategory === category ? '' : category));
@@ -224,19 +236,19 @@ export default function App() {
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#f5f5f5] px-6 ring-1 ring-white/10">
-                  <button
-                    onClick={handleButtonClick}
-                    className="h-16 pt-6"              
-                  >
-                    <img
-                      className="h-16 w-auto"
-                      src="./vula.png"
-                      alt="VULA logo"
-                    />
-                  </button>
+                    <button
+                      onClick={handleButtonClick}
+                      className="h-16 pt-6"
+                    >
+                      <img
+                        className="h-16 w-auto"
+                        src="./vula.png"
+                        alt="VULA logo"
+                      />
+                    </button>
                     <nav className="flex flex-1 flex-col py-12">
                       <ul className="flex flex-1 flex-col gap-y-2">
-                        {Object.entries(rarityObject).map(([category, items]) => (
+                        {Object.entries(rarityData).map(([category, items]) => (
                           <li key={category}>
                             <button
                               onClick={() => handleCategoryClick(category)}
@@ -258,7 +270,7 @@ export default function App() {
                             </button>
                             {openCategory === category && (
                               <ul className="pl-4 space-y-1">
-                                {Object.entries(rarityObject[category])
+                                {Object.entries(rarityData[category])
                                   .sort(([, a], [, b]) => b - a)
                                   .map(([item, value]) => (
                                     <li key={item}>
@@ -317,7 +329,7 @@ export default function App() {
           <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6">
             <button
               onClick={handleButtonClick}
-              className="h-16 pt-6"              
+              className="h-16 pt-6"
             >
               <img
                 className="h-16 w-auto"
@@ -327,7 +339,7 @@ export default function App() {
             </button>
             <nav className="flex flex-1 flex-col py-12">
               <ul className="flex flex-1 flex-col gap-y-2">
-                {Object.entries(rarityObject).map(([category, items]) => (
+                {Object.entries(rarityData).map(([category, items]) => (
                   <li key={category}>
                     <button
                       onClick={() => handleCategoryClick(category)}
@@ -349,7 +361,7 @@ export default function App() {
                     </button>
                     {openCategory === category && (
                       <ul className="pl-4 space-y-1">
-                        {Object.entries(rarityObject[category])
+                        {Object.entries(rarityData[category])
                           .sort(([, a], [, b]) => b - a)
                           .map(([item, value]) => (
                             <li key={item}>
@@ -498,8 +510,8 @@ export default function App() {
                           <div className="overflow-hidden px-2 relative">
                             <img
                               src={item.image}
-                              alt={item.name}                         
-                              className="object-cover object-center bg-gray-200 rounded-2xl"
+                              alt={item.name}
+                              className="object-cover object-center bg-white rounded-2xl"
                             />
                           </div>
                           <div className="px-4">

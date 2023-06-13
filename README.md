@@ -21,7 +21,7 @@ Copy & paste your creator address in the input field.
 
 Allow the tool to run for a few minutes and then you will see your hashlist appear in the text box.
 
-![Input field](./public/guide/hashlist-finder.png)
+![Export hash](./public/guide/export-hashlist.png)
 
 Select "Export Hash List"
 
@@ -31,7 +31,7 @@ Once you have your Hashlist, use [this tool](https://github.com/vulalabs/metadat
 
 ## Import Metadata
 
-Now you should have a ```data.json ``` and ```rarity.json``` file after using the previous tool. Copy and paste those into ```./src```.
+Now you should have a ```data.json``` and ```rarity.json``` file after using the previous tool. Copy and paste those into ```./src```.
 
 ## Support
 
