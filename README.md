@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# Getting Started
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and is maintained by [Vula Labs, Inc.](https://vulalabs.com) 
 
-## Available Scripts
+1. Install all dependencies by running ```npm install```
+2. Run the project in your browser with ```npm start```
+3. You'll be redirected to http://localhost:3000
 
-In the project directory, you can run:
+## Obtain Hashlist
 
-### `npm start`
+In order to get the hashlist for a Solana NFT project, you need to obtain the first creator address for your NFT collection. You can do this by viewing your NFT on [Solscan](https://solscan.io) and copy & pasting the first address listed under Creators.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![NFT](./public/guide/token.png)
+![Creator Address](./public/guide/creator.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Once you have the creator address go to [Magic Eden's hashlist tool](https://magiceden-io.webpkgcache.com/doc/-/s/magiceden.io/mintlist-tool) 
 
-### `npm test`
+Copy & paste your creator address in the input field.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Input field](./public/guide/hashlist-finder.png)
 
-### `npm run build`
+Allow the tool to run for a few minutes and then you will see your hashlist appear in the text box.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Input field](./public/guide/hashlist-finder.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Select "Export Hash List"
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Retrieve Metadata
 
-### `npm run eject`
+Once you have your Hashlist, use [this tool](https://github.com/vulalabs/metadata-from-hashlist) to get the metadata for each NFT.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Import Metadata
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Now you should have a ```data.json ``` and ```rarity.json``` file after using the previous tool. Copy and paste those into ```./src```.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Support
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+We're happy to help out if you have any questions. Reach out to [Obes](https://twitter.com/obestheone)
 
-## Learn More
+### P.S.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Also check out our [Free Discord Bot](https://clubpoints.app) to give your community NFT Holder roles
