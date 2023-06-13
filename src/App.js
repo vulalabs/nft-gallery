@@ -122,8 +122,10 @@ export default function App() {
     }
   }, [filteredItems, searchedItems, itemsPerPage, searchQuery]);
 
-  const fetchMoreData = () => {
-  setTimeout(() => {
+ const fetchMoreData = () => {
+  let requestAnimationFrameId = null;
+
+  const handleScroll = () => {
     const startIndex = items.length;
     const endIndex = startIndex + itemsPerPage;
     const nextItemsBatch = filteredItems.slice(startIndex, endIndex);
@@ -138,8 +140,24 @@ export default function App() {
         return allItems.slice(0, Math.min(allItems.length, startIndex + itemsPerPage));
       });
     }
-  }, 300);
+
+    requestAnimationFrameId = null;
+  };
+
+  const handleScrollThrottled = () => {
+    if (!requestAnimationFrameId) {
+      requestAnimationFrameId = requestAnimationFrame(handleScroll);
+    }
+  };
+
+  window.addEventListener('scroll', handleScrollThrottled);
+
+  return () => {
+    window.removeEventListener('scroll', handleScrollThrottled);
+    cancelAnimationFrame(requestAnimationFrameId);
+  };
 };
+
 
 useEffect(() => {
   if (nextItems.length > 0) {
