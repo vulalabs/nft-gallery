@@ -122,52 +122,52 @@ export default function App() {
     }
   }, [filteredItems, searchedItems, itemsPerPage, searchQuery]);
 
- const fetchMoreData = () => {
-  let requestAnimationFrameId = null;
+  const fetchMoreData = () => {
+    let requestAnimationFrameId = null;
 
-  const handleScroll = () => {
-    const startIndex = items.length;
-    const endIndex = startIndex + itemsPerPage;
-    const nextItemsBatch = filteredItems.slice(startIndex, endIndex);
+    const handleScroll = () => {
+      const startIndex = items.length;
+      const endIndex = startIndex + itemsPerPage;
+      const nextItemsBatch = filteredItems.slice(startIndex, endIndex);
 
-    const uniqueNextItems = nextItemsBatch.filter((nextItem) => {
-      return !items.some((item) => item.id === nextItem.id);
-    });
-
-    if (uniqueNextItems.length > 0) {
-      setItems((prevItems) => {
-        const allItems = [...prevItems, ...uniqueNextItems];
-        return allItems.slice(0, Math.min(allItems.length, startIndex + itemsPerPage));
+      const uniqueNextItems = nextItemsBatch.filter((nextItem) => {
+        return !items.some((item) => item.id === nextItem.id);
       });
+
+      if (uniqueNextItems.length > 0) {
+        setItems((prevItems) => {
+          const allItems = [...prevItems, ...uniqueNextItems];
+          return allItems.slice(0, Math.min(allItems.length, startIndex + itemsPerPage));
+        });
+      }
+
+      requestAnimationFrameId = null;
+    };
+
+    const handleScrollThrottled = () => {
+      if (!requestAnimationFrameId) {
+        requestAnimationFrameId = requestAnimationFrame(handleScroll);
+      }
+    };
+
+    window.addEventListener('scroll', handleScrollThrottled);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollThrottled);
+      cancelAnimationFrame(requestAnimationFrameId);
+    };
+  };
+
+
+  useEffect(() => {
+    if (nextItems.length > 0) {
+      setItems((prevItems) => {
+        const allItems = [...prevItems, ...nextItems];
+        return allItems.slice(0, itemsPerPage);
+      });
+      setNextItems([]);
     }
-
-    requestAnimationFrameId = null;
-  };
-
-  const handleScrollThrottled = () => {
-    if (!requestAnimationFrameId) {
-      requestAnimationFrameId = requestAnimationFrame(handleScroll);
-    }
-  };
-
-  window.addEventListener('scroll', handleScrollThrottled);
-
-  return () => {
-    window.removeEventListener('scroll', handleScrollThrottled);
-    cancelAnimationFrame(requestAnimationFrameId);
-  };
-};
-
-
-useEffect(() => {
-  if (nextItems.length > 0) {
-    setItems((prevItems) => {
-      const allItems = [...prevItems, ...nextItems];
-      return allItems.slice(0, itemsPerPage);
-    });
-    setNextItems([]);
-  }
-}, [nextItems]);
+  }, [nextItems]);
 
 
 
@@ -263,7 +263,7 @@ useEffect(() => {
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#f5f5f5] px-6 ring-1 ring-white/10">
                     <button
                       onClick={handleButtonClick}
-                      className="h-16 pt-6"
+                      className="pt-6"
                     >
                       <img
                         className="h-16 w-auto"
@@ -463,7 +463,7 @@ useEffect(() => {
                       name="search"
                       onChange={handleSearch}
                     />
-                    <div className="bg-gray-200 rounded-md px-2 py-1 font-semibold">
+                    <div className="bg-gray-200 rounded-md px-2 py-1 font-semibold text-sm md:text-md lg:text-lg">
                       ⌘K
                     </div>
                   </div>
@@ -531,7 +531,7 @@ useEffect(() => {
                         onClick={() => openModal(item)}
                         className="cursor-pointer"
                       >
-                        <div className="py-2 bg-white rounded-3xl">
+                        <div className="py-2 bg-white rounded-2xl md:rounded-3xl lg:rounded-3xl">
                           <div className="overflow-hidden px-2 relative">
                             <img
                               src={item.image}
@@ -540,7 +540,7 @@ useEffect(() => {
                             />
                           </div>
                           <div className="px-4">
-                            <div className="flex flex-row justify-between items-start text-sm text-gray-900 dark:text-white font-semibold pt-2 pb-1">
+                            <div className="flex flex-row justify-between items-start text-[10px] md:text-sm lg:text-sm text-black font-semibold pt-2 lg:pb-1">
                               <a
                                 href={`https://www.tensor.trade/item/${item.mintAddress}`}
                                 target="_blank"
